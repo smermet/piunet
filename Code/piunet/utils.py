@@ -3,7 +3,7 @@ import numpy as np
 from glob import glob
 from scipy.ndimage import shift
 from skimage.transform import rescale
-from skimage.feature import masked_register_translation
+from skimage.registration import phase_cross_correlation
 from tqdm import tqdm
 
 
@@ -143,7 +143,7 @@ def register_imgset(imgset, mask):
     
     for i in range(imgset.shape[-1]):
         x = imgset[...,i]; m = mask[...,i]
-        s = masked_register_translation(ref, x, m)
+        s = phase_cross_correlation(ref, x, reference_mask=m)
         x = shift(x, s, mode='reflect')
         m = shift(m, s, mode='constant', cval=0)
         imgset_reg[...,i] = x
