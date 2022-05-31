@@ -54,7 +54,7 @@ class TEFA(nn.Module):
 		h = self.lin0(h)
 		h = F.leaky_relu(h)
 		h = self.lin1(h)
-		h = F.sigmoid(h)
+		h = torch.sigmoid(h)
 
 		h = h.unsqueeze(2).unsqueeze(3).unsqueeze(4)
 		
@@ -125,7 +125,7 @@ class PIUNET(nn.Module):
 		self.conv_out_sigma = nn.Conv2d(config.N_feat, 1, [1,1], padding=[0,0])
 		self.norm_sigma = nn.BatchNorm2d(config.N_feat)
 
-		self.up = nn.Upsample(scale_factor=3, mode='bilinear')
+		self.up = nn.Upsample(scale_factor=3, mode='bilinear', align_corners=False)
 
 
 	def forward(self, x):
